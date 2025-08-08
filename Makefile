@@ -9,24 +9,37 @@ export TEXINPUTS
 .PHONY: all clean $(DOCS) $(DOCS:%=%-printable) $(DOCS:%=%-all)
 
 # Build ALL docs, both flavours, straight into ./build
-all: $(DOCS:%=$(BUILDDIR)/%.pdf) $(DOCS:%=$(BUILDDIR)/%-printable.pdf)
+all: $(DOCS:%=$(BUILDDIR)/%/%.pdf) $(DOCS:%=$(BUILDDIR)/%/%-printable.pdf)
 
 # Per-doc shortcuts
-$(DOCS): %: $(BUILDDIR)/%.pdf
-$(DOCS:%=%-printable): %-printable: $(BUILDDIR)/%-printable.pdf
-$(DOCS:%=%-all): %-all: $(BUILDDIR)/%.pdf $(BUILDDIR)/%-printable.pdf
+$(DOCS): %: $(BUILDDIR)/%/%.pdf
+$(DOCS:%=%-printable): %-printable: $(BUILDDIR)/%/%-printable.pdf
+$(DOCS:%=%-all): %-all: $(BUILDDIR)/%/%.pdf $(BUILDDIR)/%/%-printable.pdf
 
-# Normal build -> ./build/document-x.pdf (+ aux/logs also in ./build)
-$(BUILDDIR)/%.pdf: $(SRCDIR)/%/main.tex | $(BUILDDIR)
-	$(LATEXMK) -cd -jobname="$*" -output-directory="../../$(BUILDDIR)" $<
+# Per-doc shortcuts delegate to the file targets
+$(DOCS):
+	$(MAKE) $(BUILDDIR)/$@/$@.pdf
 
-# Printable build -> ./build/document-x-printable.pdf (+ aux/logs also in ./build)
-$(BUILDDIR)/%-printable.pdf: $(SRCDIR)/%/main.tex | $(BUILDDIR)
-	export RPG_PRINTABLE=true && $(LATEXMK) -cd -jobname="$*-printable" -output-directory="../../$(BUILDDIR)" $<
+$(DOCS:%=%-printable):
+	$(MAKE) $(BUILDDIR)/$*/$*-printable.pdf
 
-# Ensure ./build exists
-$(BUILDDIR):
-	mkdir -p "$@"
+# Normal build -> build/<doc>/<doc>.pdf
+$(BUILDDIR)/%/%.pdf: $(SRCDIR)/%/main.tex | $(BUILDDIR)/%/.tree
+	$(LATEXMK) -cd -jobname="$*" -output-directory="../../$(BUILDDIR)/$*" $<
+
+# Printable build -> build/<doc>/<doc>-printable.pdf
+$(BUILDDIR)/%/%-printable.pdf: $(SRCDIR)/%/main.tex | $(BUILDDIR)/%/.tree
+	RPG_PRINTABLE=1 $(LATEXMK) -cd -jobname="$*-printable" -output-directory="../../$(BUILDDIR)/$*" $<
+
+
+# Ensure build/<doc> exists and mirror subdirs from docs/<doc> (e.g., sections/)
+$(BUILDDIR)/%/.tree:
+	mkdir -p "$(BUILDDIR)/$*"
+	cd "$(SRCDIR)/$*" && find . -type d -print | while read d; do \
+	  mkdir -p "$(abspath $(BUILDDIR))/$*/$${d#./}"; \
+	done
+	touch "$@"
+
 
 clean:
 	latexmk -C -output-directory="$(BUILDDIR)"
