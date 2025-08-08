@@ -1,5 +1,5 @@
-# Willow's RPG Player Guide
+# Willow's RPG documents
 
-A short guide for players joining a campaign run by me, Willow.
+A collection of documents relating to my RPG campaigns
 
-Powered by LaTeX, using the [5e LaTeX template](https://github.com/rpgtex/DND-5e-LaTeX-Template).
+Powered by LaTeX, using the [5e LaTeX template](https://github.com/ashonit/DND-5e-LaTeX-Template).
