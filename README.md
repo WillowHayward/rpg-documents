@@ -1,4 +1,4 @@
-# Willow's Player Guide
+# Willow's RPG Player Guide
 
 A short guide for players joining a campaign run by me, Willow.
 
