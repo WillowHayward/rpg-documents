@@ -1,0 +1,11 @@
+% Set RPG_PRINT to true (or really any value) to enable printable mode.
+\newif\ifrpgprint
+\directlua{
+  if os.getenv("RPG_PRINTABLE") then
+    tex.print("\\rpgprinttrue")
+  end
+}
+
+\ifrpgprint
+  \PassOptionsToClass{bg=print}{dndarticle}
+\fi
