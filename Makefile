@@ -3,7 +3,7 @@ DOCS := player-guide
 SRCDIR := docs
 BUILDDIR := build
 LATEXMK := latexmk -lualatex -interaction=nonstopmode -halt-on-error -file-line-error
-TEXINPUTS := $(abspath lib)//:
+TEXINPUTS := $(abspath lib/5e-latex)//:$(abspath lib/5e-SRD)//:$(abspath utils)//:
 export TEXINPUTS
 
 .PHONY: all clean $(DOCS) $(DOCS:%=%-printable) $(DOCS:%=%-all)
