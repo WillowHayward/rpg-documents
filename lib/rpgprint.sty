@@ -1,0 +1,15 @@
+\ProvidesPackage{rpgprint}[2025/08/09 Utility to set the print mode]
+
+\newif\ifrpgprint
+\directlua{
+  if os.getenv("RPG_PRINTABLE") then
+    tex.print("\\rpgprinttrue")
+  end
+}
+
+\ifrpgprint
+  \PassOptionsToClass{highcontrast}{dndarticle}
+  \PassOptionsToClass{highcontrast}{dndbook}
+\fi
+\endinput
+
