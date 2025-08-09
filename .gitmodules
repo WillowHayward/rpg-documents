@@ -1,3 +1,6 @@
 [submodule "lib/5e-latex"]
 	path = lib/5e-latex
 	url = https://github.com/ashonit/DND-5e-LaTeX-Template
+[submodule "lib/5e-SRD"]
+	path = lib/5e-SRD
+	url = git@github.com:WillowHayward/5e-SRD.git
