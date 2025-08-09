@@ -4,3 +4,6 @@
 [submodule "lib/5e-SRD"]
 	path = lib/5e-SRD
 	url = git@github.com:WillowHayward/5e-SRD.git
+[submodule "lib/5e-latex-character-sheet"]
+	path = lib/5e-latex-character-sheet
+	url = git@github.com:matsavage/DND-5e-LaTeX-Character-Sheet-Template.git

@@ -1,47 +1,75 @@
-DOCS := player-guide knights-of-carith example-book example-fancy-book example-article example-high-contrast
-
-SRCDIR := docs
-BUILDDIR := build
+# --- config ---
 LATEXMK := latexmk -lualatex -interaction=nonstopmode -halt-on-error -file-line-error
-TEXINPUTS := $(abspath lib/5e-latex)//:$(abspath lib/5e-SRD)//:$(abspath utils)//:
-export TEXINPUTS
 
-.PHONY: all clean $(DOCS) $(DOCS:%=%-printable) $(DOCS:%=%-all)
+# --- docs ---
+DOCS          := player-guide knights-of-carith example-book example-fancy-book example-article example-high-contrast
+DOCSSRCDIR    := docs
+DOCSBUILDDIR  := build
+DOC_TEXINPUTS := $(abspath lib/5e-latex)//:$(abspath lib/5e-SRD)//:$(abspath utils)//:
 
-# Build ALL docs, both flavours, straight into ./build
-all: $(DOCS:%=$(BUILDDIR)/%/%.pdf) $(DOCS:%=$(BUILDDIR)/%/%-printable.pdf)
+.PHONY: all-docs $(DOCS) $(DOCS:%=%-printable) $(DOCS:%=%-all)
 
-# Per-doc shortcuts
-$(DOCS): %: $(BUILDDIR)/%/%.pdf
-$(DOCS:%=%-printable): %-printable: $(BUILDDIR)/%/%-printable.pdf
-$(DOCS:%=%-all): %-all: $(BUILDDIR)/%/%.pdf $(BUILDDIR)/%/%-printable.pdf
+# Build all listed docs at once
+all-docs: $(DOCS:%=$(DOCSBUILDDIR)/%/%.pdf) $(DOCS:%=$(DOCSBUILDDIR)/%/%-printable.pdf)
 
-# Per-doc shortcuts delegate to the file targets
-$(DOCS):
-	$(MAKE) $(BUILDDIR)/$@/$@.pdf
+# --- PHONY shortcuts delegate to file targets (so .tree runs) ---
+$(DOCS): %: $(DOCSBUILDDIR)/%/%.pdf
+	@:
 
-$(DOCS:%=%-printable):
-	$(MAKE) $(BUILDDIR)/$*/$*-printable.pdf
+$(DOCS:%=%-printable): %-printable: $(DOCSBUILDDIR)/%/%-printable.pdf
+	@:
 
-# Normal build -> build/<doc>/<doc>.pdf
-$(BUILDDIR)/%/%.pdf: $(SRCDIR)/%/main.tex | $(BUILDDIR)/%/.tree
-	$(LATEXMK) -cd -jobname="$*" -output-directory="../../$(BUILDDIR)/$*" $<
+$(DOCS:%=%-all): %-all:
+	@$(MAKE) $* && $(MAKE) $*-printable
 
-# Printable build -> build/<doc>/<doc>-printable.pdf
-$(BUILDDIR)/%/%-printable.pdf: $(SRCDIR)/%/main.tex | $(BUILDDIR)/%/.tree
-	RPG_PRINTABLE=1 $(LATEXMK) -cd -jobname="$*-printable" -output-directory="../../$(BUILDDIR)/$*" $<
+# --- file targets that actually build the PDFs ---
+$(DOCSBUILDDIR)/%/%.pdf: $(DOCSSRCDIR)/%/main.tex | $(DOCSBUILDDIR)/%/.tree
+	TEXINPUTS="$(DOC_TEXINPUTS)" \
+	$(LATEXMK) -cd -jobname="$*" -output-directory="../../$(DOCSBUILDDIR)/$*" "$<"
 
+$(DOCSBUILDDIR)/%/%-printable.pdf: $(DOCSSRCDIR)/%/main.tex | $(DOCSBUILDDIR)/%/.tree
+	TEXINPUTS="$(DOC_TEXINPUTS)" RPG_PRINTABLE=1 \
+	$(LATEXMK) -cd -jobname="$*-printable" -output-directory="../../$(DOCSBUILDDIR)/$*" "$<"
 
-# Ensure build/<doc> exists and mirror subdirs from docs/<doc> (e.g., sections/)
-$(BUILDDIR)/%/.tree:
-	mkdir -p "$(BUILDDIR)/$*"
-	cd "$(SRCDIR)/$*" && find . -type d -print | while read d; do \
-	  mkdir -p "$(abspath $(BUILDDIR))/$*/$${d#./}"; \
+# --- ensure build/<doc>/... exists (mirror subdirs like sections/) ---
+$(DOCSBUILDDIR)/%/.tree:
+	mkdir -p "$(DOCSBUILDDIR)/$*"
+	cd "$(DOCSSRCDIR)/$*" && find . -type d -print | while read d; do \
+	  mkdir -p "$(abspath $(DOCSBUILDDIR))/$*/$${d#./}"; \
 	done
 	touch "$@"
 
+# ---------- characters ----------
+CHARS          := example
+CHARSRCDIR     := chars
+CHARBUILDDIR   := build/chars
+CHAR_TEXINPUTS := $(abspath lib/5e-latex-character-sheet)//:$(abspath utils)//:
 
+.PHONY: all-chars $(CHARS:%=character-%)
+
+# Build all listed characters at once
+all-chars: $(CHARS:%=$(CHARBUILDDIR)/%.pdf)
+
+# Convenience: make character-<name>
+$(CHARS:%=character-%): character-%: $(CHARBUILDDIR)/%.pdf
+	@:
+
+# chars/<name>.tex -> build/chars/<name>.pdf
+$(CHARBUILDDIR)/%.pdf: $(CHARSRCDIR)/%.tex | $(CHARBUILDDIR)
+	TEXINPUTS="$(CHAR_TEXINPUTS)" \
+	$(LATEXMK) -cd -jobname="$*" -output-directory="../$(CHARBUILDDIR)" "$<"
+
+# ensure build/chars exists
+$(CHARBUILDDIR):
+	mkdir -p "$@"
+
+# --- all ---
+.PHONY: all
+
+all: $(DOCS:%=$(DOCSBUILDDIR)/%/%.pdf) $(DOCS:%=$(DOCSBUILDDIR)/%/%-printable.pdf) $(CHARS:%=$(CHARBUILDDIR)/%.pdf)
+
+# --- clean ---
+.PHONY: clean
 clean:
-	latexmk -C -output-directory="$(BUILDDIR)"
-	rm -rf "$(BUILDDIR)"
+	rm -rf "$(DOCSBUILDDIR)"
 
