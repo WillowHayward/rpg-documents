@@ -1,3 +1,3 @@
-[submodule "lib"]
-	path = lib
-	url = git@github.com:ashonit/DND-5e-LaTeX-Template.git
+[submodule "lib/5e-latex"]
+	path = lib/5e-latex
+	url = https://github.com/ashonit/DND-5e-LaTeX-Template
