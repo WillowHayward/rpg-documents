@@ -1,4 +1,4 @@
-DOCS := player-guide knights-of-carith
+DOCS := player-guide knights-of-carith example-book example-fancy-book example-article example-high-contrast
 
 SRCDIR := docs
 BUILDDIR := build
