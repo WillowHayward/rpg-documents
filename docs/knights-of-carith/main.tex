@@ -1,12 +1,33 @@
-\documentclass[letterpaper,twocolumn,openany]{rpgarticle}
+\documentclass[letterpaper,twocolumn,openany]{rpgbook}
 
 \usepackage{hyperref}
+\usepackage{dndsrd}
+\usepackage{graphicx}
+\graphicspath{{./img/}}
+\usetikzlibrary{intersections} % Required for ornamentedtabular
 
-\title{Knights of Carith}
+\title{
+  \Huge \scshape \fontfamily{pbk}\fontsize{50}{40}\selectfont
+  Knights of Carith \\
+  \medskip
+  \normalfont
+  \medskip\Huge
+  A single session adventure designed for Dungeons and Dragons 5e
+}
 \author{Willow Hayward}
+\date{}
 
 \begin{document}
 
-Time for adventure, hooray
+\frontmatter
+\maketitle
+\include{sections/0-credits}
+\mainmatter%
+\include{sections/1-introduction}
+\include{sections/2-map}
+\include{sections/3-adventure}
+
+\appendix
+\include{sections/appendix-monsters}
 
 \end{document}
