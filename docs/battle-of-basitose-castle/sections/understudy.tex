@@ -1,0 +1,68 @@
+\onecolumn
+\section {The Understudy}
+
+The Understudy is a humanoid of rougly average height. They wear a harlequin costume consisting of red, orange, and black triangles. Due to their black gloves and tucked white socks, none of their skin is visible. They wear a dramatic mask that seems able to switch between various emotions, though never when someone is looking directly at them. Tricorn hat w/ feather.
+
+\begin{monsterbox}{Ulysses Notorio Devida Emberto Ronaldo Sugartits Tyranno Umburto Debanthian Ymbyrto}
+\begin{hangingpar}
+\textit{Medium humanoid (ambigious), Level 7 Bard, Professional Understudy}
+% Prof bonus +3
+\end{hangingpar}
+\dndline%
+\basics[%
+armorclass = 12,
+% 20 from rolls
+hitpoints = 35,
+speed = {30 ft.}
+]
+\dndline%
+\stats[%
+% Rolls: 	12	13	12	14	13	13
+% Lineage: +2 Char
+% Lvl 4 feat: +2 Char
+STR = \stat{12},
+DEX = \stat{13},
+CON = \stat{13},
+INT = \stat{12},
+WIS = \stat{13},
+CHA = \stat{18}
+]
+\dndline%
+\details[%
+% Proficiencies: Performance, Persuasian, Deception, Acrobatics, History, Religion
+% Expertise: Performance, Persuasion
+skills={Performance +10, Persuasion +10, Deception +7, Acrobatics +4, History +4, Religion +4, All others +2},
+damageimmunities={},
+savingthrows={Dexterity +4, Charisma +7},
+conditionimmunities={},
+damageresistances={},
+damagevulnerabilities={},
+senses={passive Perception 12},
+languages={Whatever the role requires},
+challenge=3,
+]
+\dndline%
+
+\monstersection{Actions}
+  \DndMonsterAction{Spellcasting}
+  The Understudy is a 2nd-level spellcaster. Its spellcasting ability is Charisma (spell save DC 12, +4 to hit with spell attacks). It has the following sorcerer spells prepared:
+  \begin{DndMonsterSpells}
+    \DndMonsterSpellLevel{Blade Ward, Minor Illusion, Vicious Mockery}
+    \DndMonsterSpellLevel[1][4]{Bless, Charm Person, Guiding Bolt, Healing Word, Inflict Wounds}
+    \DndMonsterSpellLevel[2][3]{Aid, Prayer of Healing*, Spiritual Weapon}
+    \DndMonsterSpellLevel[3][3]{Beacon of Hope*, Mass Healing Word, Speak With Dead}
+    \DndMonsterSpellLevel[4][1]{}
+  \end{DndMonsterSpells}
+  * Magical Discoveries
+\DndMonsterAction{Bardic Inspiration} 4 uses, d8. Resets on a long rest. Can expend a spell slot to regain 1 use of Bardic Inspiration.
+\DndMonsterAction{Rapier} +4 to hit. 1d8 + 1 piercing damage.
+
+\monstersection{Reactions}
+    \DndMonsterAction{Cutting Words} You learn to use your wit to supernaturally distract, confuse, and otherwise sap the confidence and competence of others. When a creature that you can see within 60 feet of yourself makes a damage roll or succeeds on an ability check or attack roll, you can take a Reaction to expend one use of your Bardic Inspiration; roll your Bardic Inspiration die, and subtract the number rolled from the creature's roll, reducing the damage or potentially turning the success into a failure.
+    \DndMonsterAction{Countercharm} You can use musical notes or words of power to disrupt mind-influencing effects. If you or a creature within 30 feet of you fails a saving throw against an effect that applies the Charmed or Frightened condition, you can take a Reaction to cause the save to be rerolled, and the new roll has Advantage.
+
+\monstersection{Equipment}
+    \DndMonsterAction{Lute} Spellcasting focus
+    \DndMonsterAction{Leather Armour} Spellcasting focus
+
+\end{monsterbox}

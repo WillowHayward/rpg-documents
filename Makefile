@@ -2,7 +2,7 @@
 LATEXMK := latexmk -lualatex -interaction=nonstopmode -halt-on-error -file-line-error
 
 # --- docs ---
-DOCS          := player-guide knights-of-carith example-book example-fancy-book example-article example-high-contrast
+DOCS          := gm-screen battle-of-basitose-castle player-guide knights-of-carith example-book example-fancy-book example-article example-high-contrast
 DOCSSRCDIR    := docs
 DOCSBUILDDIR  := build
 DOC_TEXINPUTS := $(abspath lib/5e-latex)//:$(abspath lib/5e-SRD)//:$(abspath utils)//:
